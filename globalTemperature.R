@@ -20,7 +20,7 @@ colnames(d) <- c("year", "all", "north", "south")
 
 
 ## Data type conversion
-d$time <- strptime(d$year, "%Y”N", tz="")
+d$time <- strptime(d$year, "%Yå¹´", tz="")
 d$year <- as.numeric(format(d$time, "%Y"))
 d$all <- as.numeric(as.character(d$all))
 d$north <- as.numeric(as.character(d$north))
@@ -43,12 +43,13 @@ dd.mv$time <- strptime(dd.mv$year, "%Y", tz="")
 ### PLOT
 pdf1.filename <- "all_detail.pdf"
 pdf2.filename <- "compare_mv.pdf"
-xlab <- "”N"
-ylab <- "1981-2010”N•½‹Ï‚©‚ç‚Ì· (Ž)"
+xlab <- "å¹´"
+ylab <- "1981-2010å¹´å¹³å‡ã‹ã‚‰ã®å·® (â„ƒ)"
 
 
 g <- ggplot(d, aes(x=time , y=all)) + geom_line(colour=rgb(0.5,0.5,0.5, 0.5), lwd=0.5) + geom_point()
-g <- g + theme_classic() + xlab(xlab) + ylab(ylab)
+g <- g + theme_classic() + xlab(xlab) + ylab(ylab) + ylim(-1, 1) + xlim(as.POSIXct("1890-01-01"), as.POSIXct("2020-01-01"))
+
 g <- g + geom_hline(yintercept=0, linetype=2)
 g <- g + geom_smooth(method="lm", se=F, size=0.4)
 g <- g + geom_line(aes(x=time , y=all.mv), colour="red")
@@ -56,15 +57,15 @@ g <- g + geom_line(aes(x=time , y=all.mv), colour="red")
 
 ggsave("all_detail.pdf", g, width=8, height=5, family="Japan1GothicBBB")
 ggsave("all_detail.png", g, width=8, height=5, family="Japan1GothicBBB")
-
 rm(g)
 
 
 g <- ggplot(dd.mv, aes(x=time, y= value, colour=variable)) + geom_line()
-g <- g + theme_classic() + xlab(xlab) + ylab(ylab)
+g <- g + theme_classic() + xlab(xlab) + ylab(ylab) + ylim(-1, 1) + xlim(as.POSIXct("1890-01-01"), as.POSIXct("2020-01-01"))
 g <- g + geom_hline(yintercept=0, linetype=2)
 g <- g + labs(colour="") + theme(legend.position=c(0.9, 0.2))
 
 
 ggsave("compare_mv.pdf", g, width=8, height=5, family="Japan1GothicBBB")
 ggsave("compare_mv.png", g, width=8, height=5, family="Japan1GothicBBB")
+rm(g)
